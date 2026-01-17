@@ -96,8 +96,8 @@ It is NEITHER synchronized NOR backed up.
 Create a folder here that matches the repository name in dev/.
 
 Example:
-* Code:      /mnt/data/dev/packages/arbolab_core
-* Workspace: /mnt/data/dev_workspaces/arbolab_core
+* Code:      /mnt/data/dev/packages/arbolab
+* Workspace: /mnt/data/dev_workspaces/arbolab
 
 ## Usage
 * Mount Docker Volumes here.
@@ -117,9 +117,9 @@ set_permissions() {
     find "$BASE_DEV_DIR" -type d -exec chmod 755 {} +
     find "$BASE_WORK_DIR" -type d -exec chmod 755 {} +
 
-    # Set File Permissions (644: User RW, Group/Other R)
-    find "$BASE_DEV_DIR" -type f -exec chmod 644 {} +
-    find "$BASE_WORK_DIR" -type f -exec chmod 644 {} +
+    # Sorgt dafür, dass DU lesen/schreiben kannst, nimmt aber kein +x weg
+    find "$BASE_DEV_DIR" -type f -exec chmod u+rw,go+r {} +
+    find "$BASE_WORK_DIR" -type f -exec chmod u+rw,go+r {} +
 
     # Ensure this script remains executable if it exists in target
     if [ -f "$BASE_DEV_DIR/_setup/setup_env.sh" ]; then
