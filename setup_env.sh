@@ -10,7 +10,7 @@ BASE_DEV_DIR="/mnt/data/dev"
 BASE_WORK_DIR="/mnt/data/dev_workspaces"
 
 # Subdirectories to create in DEV
-SUBDIRS=("packages" "apps" "web" "science" "infra" "playground" "_setup")
+SUBDIRS=("packages" "apps" "web" "_setup", "infra")
 
 # KDE Directory Icons (Functional settings, not visual output)
 ICON_DEV="folder-code-symbolic"
@@ -19,11 +19,6 @@ ICON_WORK="docker"
 # ==============================================================================
 # PRE-FLIGHT CHECKS
 # ==============================================================================
-
-if [ "$(id -u)" -ne 0 ]; then
-    echo "[ERROR] This script must be run as root. Use: sudo $0" >&2
-    exit 1
-fi
 
 # Detect the actual user behind sudo
 REAL_USER=${SUDO_USER:-$USER}
@@ -75,9 +70,6 @@ It is NOT synchronized via Nextcloud, but backed up via Borg.
 * packages/   - Reusable libraries (PyPI, NPM)
 * apps/       - Standalone applications
 * web/        - Frontend projects
-* science/    - Data Science & Analysis
-* infra/      - Infrastructure & Docker
-* playground/ - Temporary tests
 * _setup/     - Environment setup scripts
 
 ## Rules
@@ -96,8 +88,8 @@ It is NEITHER synchronized NOR backed up.
 Create a folder here that matches the repository name in dev/.
 
 Example:
-* Code:      /mnt/data/dev/packages/arbolab_core
-* Workspace: /mnt/data/dev_workspaces/arbolab_core
+* Code:      /mnt/data/dev/packages/arbolab
+* Workspace: /mnt/data/dev_workspaces/arbolab
 
 ## Usage
 * Mount Docker Volumes here.
