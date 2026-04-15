@@ -1,23 +1,31 @@
 # Dev Environment Setup
 
-This repository contains the infrastructure-as-code configuration for my personal development environment.
-It enforces a strict separation between **Source Code** (Git), **Persistent Data** (Nextcloud), and **Ephemeral Workspaces** (Docker volumes).
+This repository contains the infrastructure-as-code for my personal development environment.
+It enforces a strict separation between **Source Code** (Git), **Persistent Data** (Nextcloud), and **Ephemeral Workspaces** (local, no backup).
 
 ## 📂 Targeted Architecture
 
-The script enforces the following structure on `/mnt/data`:
+The setup script enforces the following structure on `/mnt/data`:
 
-| Path | Purpose | Backup Policy |
-| :--- | :--- | :--- |
-| `/mnt/data/dev` | **Source Code Library** (Git repositories) | ✅ Borg Backup |
-| `/mnt/data/dev_workspaces` | **Ephemeral Labs** (Build artifacts, temp DBs) | ❌ No Backup |
-| `/mnt/data/dev/_setup` | This configuration repository | ✅ Borg Backup |
+| Path | Purpose | Backup |
+|:---|:---|:---|
+| `/mnt/data/dev/` | Source code library (Git repos) | ✅ Borg |
+| `/mnt/data/dev/projects/` | Data analysis & research projects | ✅ Borg |
+| `/mnt/data/dev/_templates/` | Project scaffolding templates | ✅ Borg |
+| `/mnt/data/dev_workspaces/` | Ephemeral artifacts (Parquet, plots) | ❌ None |
+| `/mnt/data/kyellsen/300_Projekte/` | Raw data & project docs | ✅ Nextcloud |
+
+## 🔑 Key Principles
+
+- **No raw data in Git.** Use `.env` files to point projects at Nextcloud data paths.
+- **Workspaces are ephemeral.** Every result can be regenerated from raw data + code.
+- **Project scaffolding** via [copier](https://copier.readthedocs.io/) from `/mnt/data/dev/_templates/copier_project`.
 
 ## 🚀 Bootstrap on a New Machine
 
 ### 1. Prerequisites
-Ensure you have a generic storage location available at `/mnt/data`.
-If you are on a single-partition system (e.g., Laptop), create the directory manually:
+
+Ensure storage is mounted at `/mnt/data`:
 
 ```bash
 sudo mkdir -p /mnt/data
@@ -26,9 +34,7 @@ sudo chown $USER:$USER /mnt/data
 
 ### 2. Installation
 
-Clone this repository directly into its designated location:
-
-```
+```bash
 # 1. Prepare the directory
 mkdir -p /mnt/data/dev/_setup
 
@@ -39,17 +45,10 @@ git clone git@github.com:kyellsen/dev_setup.git /mnt/data/dev/_setup
 sudo /mnt/data/dev/_setup/setup_env.sh
 ```
 
-### 3. Maintaince
+### 3. Maintenance
 
-This script is idempotent. You can run it anytime to:
+The script is idempotent — safe to re-run anytime to repair permissions or create missing dirs:
 
-- Repair directory permissions.
-- Create missing subdirectories.
-- Restore folder icons.
-
-```
+```bash
 sudo /mnt/data/dev/_setup/setup_env.sh
 ```
-
-
-

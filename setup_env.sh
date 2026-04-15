@@ -10,7 +10,7 @@ BASE_DEV_DIR="/mnt/data/dev"
 BASE_WORK_DIR="/mnt/data/dev_workspaces"
 
 # Subdirectories to create in DEV
-SUBDIRS=("packages" "apps" "web" "_setup", "infra")
+SUBDIRS=("packages" "apps" "web" "_setup" "infra" "projects" "_templates")
 
 # KDE Directory Icons (Functional settings, not visual output)
 ICON_DEV="folder-code-symbolic"
@@ -67,34 +67,52 @@ This directory contains source code only (Git Repositories).
 It is NOT synchronized via Nextcloud, but backed up via Borg.
 
 ## Structure
-* packages/   - Reusable libraries (PyPI, NPM)
-* apps/       - Standalone applications
-* web/        - Frontend projects
-* _setup/     - Environment setup scripts
+
+| Directory      | Purpose                                         |
+|:---------------|:------------------------------------------------|
+| \`packages/\`   | Reusable libraries (PyPI, NPM, etc.)            |
+| \`apps/\`       | Standalone applications                         |
+| \`web/\`        | Frontend projects                               |
+| \`projects/\`   | Data analysis and research projects             |
+| \`_setup/\`     | Environment setup scripts (this repo)           |
+| \`_templates/\` | Project scaffolding templates (e.g., Copier)    |
+| \`infra/\`      | Infrastructure configs (Docker, Ansible, etc.)  |
 
 ## Rules
-* No large binary data (CSVs, DBs).
-* Use Symlinks or Environment Variables for real data in /mnt/data/kyellsen/Nextcloud.
+
+- No large binary data (CSVs, Parquet, DBs) — use \`/mnt/data/kyellsen/300_Projekte/\` for raw data.
+- Use \`.env\` files in each project to define paths to Nextcloud data and workspaces.
+- Workspace outputs (ephemeral) go to \`/mnt/data/dev_workspaces/<project-name>/\`.
 EOF
 
     # README for WORKSPACES
     cat > "$BASE_WORK_DIR/README.md" <<EOF
 # Workspaces & Labs
 
-This directory contains ephemeral data, container volumes, and caches.
-It is NEITHER synchronized NOR backed up.
+This directory contains ephemeral data: build artifacts, intermediate analysis files, and caches.
+It is NEITHER synchronized NOR backed up. Everything here is regenerable.
 
 ## Naming Convention
-Create a folder here that matches the repository name in dev/.
 
-Example:
-* Code:      /mnt/data/dev/packages/arbolab
-* Workspace: /mnt/data/dev_workspaces/arbolab
+Each workspace directory uses the same name as its corresponding project in \`/mnt/data/dev/projects/\`:
+
+| Code (Dev)                                  | Workspace                              |
+|:--------------------------------------------|:---------------------------------------|
+| \`/mnt/data/dev/projects/<project-name>/\`  | \`/mnt/data/dev_workspaces/<project-name>/\` |
+
+## Contents (Typical)
+
+- Silver/Gold data tiers (Parquet, DuckDB)
+- Generated plots and tables (before freeze into Git)
+- Temporary script outputs
 
 ## Usage
-* Mount Docker Volumes here.
-* Temporary script outputs.
-* Content is volatile.
+
+Paths are defined via \`.env\` in the corresponding dev project:
+
+\`\`\`bash
+BA_WORKSPACE_ROOT=/mnt/data/dev_workspaces/ba_ks
+\`\`\`
 EOF
 }
 

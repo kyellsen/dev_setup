@@ -1,0 +1,21 @@
+
+module my-nft 1.0;
+
+require {
+	type iptables_t;
+	type home_root_t;
+	type ptmx_t;
+	type config_home_t;
+	type user_home_t;
+	class file { append write };
+	class chr_file { read write };
+}
+
+#============= iptables_t ==============
+allow iptables_t config_home_t:file append;
+allow iptables_t home_root_t:file write;
+
+#!!!! This avc is allowed in the current policy
+allow iptables_t home_root_t:file append;
+allow iptables_t ptmx_t:chr_file { read write };
+allow iptables_t user_home_t:file write;
