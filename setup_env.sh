@@ -10,7 +10,7 @@ BASE_DEV_DIR="/mnt/data/dev"
 BASE_WORK_DIR="/mnt/data/dev_workspaces"
 
 # Subdirectories to create in DEV
-SUBDIRS=("packages" "apps" "web" "_setup" "infra" "projects" "_templates")
+SUBDIRS=("packages" "apps" "web" "_setup" "infra" "projects" "_templates" "sandbox")
 
 # KDE Directory Icons (Functional settings, not visual output)
 ICON_DEV="folder-code-symbolic"
@@ -74,6 +74,7 @@ It is NOT synchronized via Nextcloud, but backed up via Borg.
 | \`apps/\`       | Standalone applications                         |
 | \`web/\`        | Frontend projects                               |
 | \`projects/\`   | Data analysis and research projects             |
+| \`sandbox/\`    | Temporary experiments and scratchpad projects   |
 | \`_setup/\`     | Environment setup scripts (this repo)           |
 | \`_templates/\` | Project scaffolding templates (e.g., Copier)    |
 | \`infra/\`      | Infrastructure configs (Docker, Ansible, etc.)  |
